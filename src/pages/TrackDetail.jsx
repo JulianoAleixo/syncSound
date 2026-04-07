@@ -9,6 +9,7 @@ const TrackDetail = () => {
     const [track, setTrack] = useState(null);
     const [related, setRelated] = useState([]);
     const [playing, setPlaying] = useState(false);
+    const [volume, setVolume] = useState(0.5);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const audioRef = useRef();
@@ -37,6 +38,12 @@ const TrackDetail = () => {
         loadTrack();
     }, [id]);
 
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = volume;
+        }
+    }, [volume]);
+
     const togglePlay = () => {
         if (!audioRef.current) return;
         if (playing) {
@@ -48,7 +55,9 @@ const TrackDetail = () => {
     };
 
     if (loading)
-        return <p className="text-center text-slate-300 pt-32">Carregando...</p>;
+        return (
+            <p className="text-center text-slate-300 pt-32">Carregando...</p>
+        );
     if (error)
         return <p className="text-center text-red-300 pt-32">Erro: {error}</p>;
 
@@ -58,6 +67,8 @@ const TrackDetail = () => {
     const duration = track.duration
         ? `${Math.floor(track.duration / 60)}:${String(track.duration % 60).padStart(2, "0")}`
         : null;
+
+    const percentage = volume * 100;
 
     return (
         <main className="max-w-4xl mx-auto px-4 pt-24 pb-12">
@@ -99,21 +110,46 @@ const TrackDetail = () => {
                     )}
 
                     {track.preview ? (
-                        <div className="mt-6">
-                            <p className="text-xs text-slate-300 mb-2">
-                                Preview (30 segundos)
-                            </p>
-                            <audio
-                                ref={audioRef}
-                                src={track.preview}
-                                onEnded={() => setPlaying(false)}
-                            />
-                            <button
-                                onClick={togglePlay}
-                                className="flex items-center gap-3 bg-orange-400 hover:bg-orange-300 text-slate-950 font-semibold px-6 py-2.5 rounded-full transition-colors cursor-pointer"
-                            >
-                                <span>{playing ? <Pause /> : <Play />}</span>
-                            </button>
+                        <div className="flex gap-2">
+                            <div className="mt-6">
+                                <p className="text-xs text-slate-300 mb-2">
+                                    Preview (30 segundos)
+                                </p>
+                                <audio
+                                    ref={audioRef}
+                                    src={track.preview}
+                                    onEnded={() => setPlaying(false)}
+                                    onLoadedMetadata={() => {
+                                        if (audioRef.current) {
+                                            audioRef.current.volume = 0.5;
+                                        }
+                                    }}
+                                />
+                                <button
+                                    onClick={togglePlay}
+                                    className="mx-auto flex items-center gap-3 bg-orange-400 hover:bg-orange-300 text-slate-950 font-semibold px-6 py-2.5 rounded-full transition-colors cursor-pointer"
+                                >
+                                    <span>
+                                        {playing ? <Pause /> : <Play />}
+                                    </span>
+                                </button>
+                            </div>
+                            <div className="mt-4 flex items-center gap-3">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.01"
+                                    value={volume}
+                                    onChange={(e) =>
+                                        setVolume(Number(e.target.value))
+                                    }
+                                    className="volume-slider w-20 h-2.5 -rotate-90 rounded-sm cursor-n-resize!"
+                                    style={{
+                                        background: `linear-gradient(to right, #f97316 ${percentage}%, #475569 ${percentage}%)`,
+                                    }}
+                                />
+                            </div>
                         </div>
                     ) : (
                         <p className="text-slate-300 text-sm mt-6">

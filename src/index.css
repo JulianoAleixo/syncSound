@@ -5,3 +5,37 @@
         @apply bg-slate-900 text-slate-300 antialiased;
     }
 }
+
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* trilha base */
+.volume-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: transparent;
+}
+
+.volume-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: transparent;
+}
+
+/* remove completamente a bolinha */
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 0;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    border: none;
+}
