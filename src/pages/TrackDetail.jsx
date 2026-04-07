@@ -80,7 +80,7 @@ const TrackDetail = () => {
                 Voltar
             </Link>
 
-            <div className="flex flex-col sm:flex-row gap-8">
+            <div className="flex flex-col sm:flex-row items-center gap-8">
                 <div className="shrink-0">
                     <img
                         src={cover}
@@ -89,7 +89,7 @@ const TrackDetail = () => {
                     />
                 </div>
 
-                <div className="flex-1">
+                <div className="sm:flex-1">
                     <p className="text-xs text-rose-400 uppercase tracking-widest mb-1">
                         {track.album?.title}
                     </p>
