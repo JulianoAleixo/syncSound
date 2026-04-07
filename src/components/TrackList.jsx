@@ -3,7 +3,7 @@ import TrackCard from "./TrackCard";
 const TrackList = ({ tracks }) => {
     if (tracks.length === 0) {
         return (
-            <p className="text-center text-zinc-500 py-20">
+            <p className="text-center text-slate-300 py-20">
                 Nenhuma música encontrada.
             </p>
         );

@@ -62,11 +62,11 @@ const Home = () => {
                     placeholder="Buscar músicas ou artistas..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outrline-none focus:ring-2 focus:ring-green-400"
+                    className="flex-1 bg-slate-800 border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-300 placeholder:text-slate-400 focus:outrline-none focus:ring-2"
                 />
                 <button
                     type="submit"
-                    className="bg-green-400 hover:bg-green-300 text-zinc-900 font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
+                    className="bg-orange-400 hover:bg-orange-300 text-slate-950 font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors cursor-pointer"
                 >
                     Buscar
                 </button>
@@ -80,11 +80,11 @@ const Home = () => {
             </div>
 
             {loading && (
-                <p className="text-center text-zinc-500 py-20">Carregando...</p>
+                <p className="text-center text-slate-300 py-20">Carregando...</p>
             )}
 
             {error && (
-                <p className="text-center text-red-400 py-20">Erro: {error}</p>
+                <p className="text-center text-red-300 py-20">Erro: {error}</p>
             )}
 
             {!loading && !error && <TrackList tracks={tracks} />}
