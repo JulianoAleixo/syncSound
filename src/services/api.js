@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.DEV ? "/deezer" : "https://api.deezer.com";
+const BASE_URL = "/deezer";
 
 export const GENRES = [
     { id: 0, name: "Todos" },
