@@ -121,6 +121,46 @@ export default defineConfig({
 
 ```css
 @import "tailwindcss";
+
+@layer base {
+    body {
+        @apply bg-slate-900 text-slate-300 antialiased;
+    }
+}
+
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* trilha base */
+.volume-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: transparent;
+}
+
+.volume-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: transparent;
+}
+
+/* remove completamente a bolinha */
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 0;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    border: none;
+}
 ```
 
 > "Pronto! O Tailwind já está configurado. Você pode testar colocando uma classe como `text-red-500` em algum elemento e ver a cor mudar."
@@ -900,8 +940,10 @@ const TrackDetail = () => {
                 setLoading(true);
                 setError(null);
                 setPlaying(false);
+
                 const data = await fetchTrackById(id);
                 setTrack(data);
+
                 const artistTracks = await fetchArtistTopTracks(data.artist.id);
                 setRelated(
                     artistTracks.filter((t) => t.id !== data.id).slice(0, 5),
@@ -912,11 +954,14 @@ const TrackDetail = () => {
                 setLoading(false);
             }
         };
+
         loadTrack();
     }, [id]);
 
     useEffect(() => {
-        if (audioRef.current) audioRef.current.volume = volume;
+        if (audioRef.current) {
+            audioRef.current.volume = volume;
+        }
     }, [volume]);
 
     const togglePlay = () => {
@@ -943,6 +988,8 @@ const TrackDetail = () => {
         ? `${Math.floor(track.duration / 60)}:${String(track.duration % 60).padStart(2, "0")}`
         : null;
 
+    const percentage = volume * 100;
+
     return (
         <main className="max-w-4xl mx-auto px-4 pt-24 pb-12">
             <Link
@@ -961,6 +1008,7 @@ const TrackDetail = () => {
                         className="w-48 rounded-xl"
                     />
                 </div>
+
                 <div className="sm:flex-1">
                     <p className="text-xs text-rose-400 uppercase tracking-widest mb-1">
                         {track.album?.title}
@@ -968,9 +1016,13 @@ const TrackDetail = () => {
                     <h1 className="text-2xl font-bold text-slate-200 leading-tight">
                         {track.title}
                     </h1>
-                    <p className="text-fuchsia-400 text-sm mt-1">
+                    <Link
+                        to={`/?artist=${track.artist.id}`}
+                        className="text-fuchsia-400 hover:text-fuchsia-300 text-sm mt-1 inline-block transition-colors"
+                    >
                         {track.artist?.name}
-                    </p>
+                    </Link>
+
                     {duration && (
                         <p className="text-slate-400 text-sm mt-2">
                             Duração: {duration}
@@ -978,21 +1030,46 @@ const TrackDetail = () => {
                     )}
 
                     {track.preview ? (
-                        <div className="mt-6">
-                            <p className="text-xs text-slate-300 mb-2">
-                                Preview (30 segundos)
-                            </p>
-                            <audio
-                                ref={audioRef}
-                                src={track.preview}
-                                onEnded={() => setPlaying(false)}
-                            />
-                            <button
-                                onClick={togglePlay}
-                                className="flex items-center gap-3 bg-orange-400 hover:bg-orange-300 text-slate-950 font-semibold px-6 py-2.5 rounded-full transition-colors cursor-pointer"
-                            >
-                                {playing ? <Pause /> : <Play />}
-                            </button>
+                        <div className="flex gap-2">
+                            <div className="mt-6">
+                                <p className="text-xs text-slate-300 mb-2">
+                                    Preview (30 segundos)
+                                </p>
+                                <audio
+                                    ref={audioRef}
+                                    src={track.preview}
+                                    onEnded={() => setPlaying(false)}
+                                    onLoadedMetadata={() => {
+                                        if (audioRef.current) {
+                                            audioRef.current.volume = 0.5;
+                                        }
+                                    }}
+                                />
+                                <button
+                                    onClick={togglePlay}
+                                    className="mx-auto flex items-center gap-3 bg-orange-400 hover:bg-orange-300 text-slate-950 font-semibold px-6 py-2.5 rounded-full transition-colors cursor-pointer"
+                                >
+                                    <span>
+                                        {playing ? <Pause /> : <Play />}
+                                    </span>
+                                </button>
+                            </div>
+                            <div className="mt-4 flex items-center gap-3">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.01"
+                                    value={volume}
+                                    onChange={(e) =>
+                                        setVolume(Number(e.target.value))
+                                    }
+                                    className="volume-slider w-20 h-2.5 -rotate-90 rounded-sm cursor-n-resize!"
+                                    style={{
+                                        background: `linear-gradient(to right, #f97316 ${percentage}%, #475569 ${percentage}%)`,
+                                    }}
+                                />
+                            </div>
                         </div>
                     ) : (
                         <p className="text-slate-300 text-sm mt-6">
@@ -1017,7 +1094,6 @@ const TrackDetail = () => {
         </main>
     );
 };
-
 export default TrackDetail;
 ```
 
