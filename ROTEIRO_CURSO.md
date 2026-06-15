@@ -33,6 +33,20 @@ Ao final desta aula, o aluno terá o ambiente de desenvolvimento funcionando e o
 
 > "Seja bem-vindo ao curso de React e Tailwind CSS na prática! Ao longo dessas aulas, a gente vai construir juntos um projeto real — o **SyncSound**, uma plataforma de descoberta musical que consome dados reais da API do Deezer. Você vai poder ver as músicas mais tocadas, filtrar por gênero, pesquisar artistas e até ouvir um preview das faixas.
 >
+> Primeiramente, eu quero te mostrar rapidamente o que é o React e como ele enxerga uma aplicação.
+>
+> O React é uma biblioteca JavaScript criada para construir interfaces de usuário. Em vez de pensar em uma página inteira, nós dividimos a interface em pequenas peças reutilizáveis chamadas componentes.
+>
+> Por exemplo: no nosso projeto teremos um cabeçalho, uma barra de busca, filtros de gênero e cards de música. Cada uma dessas partes será um componente separado.
+>
+> Isso torna o código mais organizado, mais fácil de manter e muito mais fácil de reutilizar.
+>
+> Ao longo do curso, a gente vai construir esses blocos separadamente e depois conectá-los para formar a aplicação completa.
+>
+> Não se preocupe em entender todos os detalhes agora. Nesta primeira aula eu só quero que você entenda a ideia principal: React é uma forma de construir interfaces usando componentes reutilizáveis.
+> 
+>Na próxima aula vamos mergulhar mais fundo e aprender como criar esses componentes na prática.
+>
 > Mas antes de codar qualquer coisa, a gente precisa preparar o ambiente. Então nessa primeira aula, vamos instalar o Node.js, configurar o VS Code, e criar o projeto base com tudo que precisamos."
 
 ---
